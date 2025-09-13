@@ -1,4 +1,9 @@
-// Filepath: netlify/functions/get-question.js
+// Filepath: api/get-question.js (for Vercel) or netlify/functions/get-question.js (for Netlify)
+
+// The fetch library is not available by default in Node.js, so we need to import it.
+// Ensure you have `node-fetch` in your package.json by running `npm install node-fetch`
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 exports.handler = async function(event, context) {
     // Only allow POST requests
     if (event.httpMethod !== 'POST') {
@@ -13,10 +18,14 @@ exports.handler = async function(event, context) {
         }
 
         const { difficulty, topic } = JSON.parse(event.body);
-
-        if (!['easy', 'normal', 'hard'].includes(difficulty)) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Invalid difficulty level provided.' }) };
+        
+        // --- FIX APPLIED ---
+        // Updated the validation to accept all 5 difficulty levels sent by the quiz page.
+        const validDifficulties = ["Very Easy", "Easy", "Normal", "Hard", "Very Hard"];
+        if (!validDifficulties.includes(difficulty)) {
+            return { statusCode: 400, body: JSON.stringify({ error: `Invalid difficulty level provided. Received: ${difficulty}` }) };
         }
+
         if (!topic || typeof topic !== 'string' || topic.trim() === '') {
             return { statusCode: 400, body: JSON.stringify({ error: 'A valid topic must be provided.' }) };
         }
@@ -57,3 +66,4 @@ exports.handler = async function(event, context) {
         return { statusCode: 500, body: JSON.stringify({ error: 'An internal server error occurred.' }) };
     }
 };
+
