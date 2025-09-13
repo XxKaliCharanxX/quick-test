@@ -1,0 +1,17 @@
+# This is the configuration file for Netlify.
+# Place it in the root directory of your project.
+
+[build]
+  # This tells Netlify where your serverless functions are located.
+  functions = "netlify/functions/"
+
+  # This tells Netlify which folder contains your website files to publish.
+  # If your HTML files (like registration.html) are in the root, you can
+  # often leave this blank or set it to "."
+  publish = "/"
+
+[functions]
+  # Specifies the version of Node.js to use for your functions.
+  node_bundler = "esbuild"
+  [functions.node_bundler]
+    target = "node18"
