@@ -5,221 +5,115 @@
     <title>EcoLearn Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Profile + dashboard-style header */
-:root {
-    --primary-green: #259a5a;
-    --primary-green-2: #1b8b45;
-    --header-bg: #259a5a;
-    --logo-black: #222;
-    --nav-white: #fff;
-    --muted-bg: #f4f4f9;
-    --container-max: 1200px;
-}
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding-top: 76px;
-    background-color: var(--muted-bg);
-}
-.container { max-width:var(--container-max); margin:0 auto; padding:0 24px; }
-/* dashboard header & nav (kept as you added) */
-.dashboard-header {
-    background: #259a5a;
-    color: #fff;
-    padding: 0;
-    box-shadow: 0 6px 18px rgba(37,154,90,0.12);
-    width: 100%;
-    position: fixed;
-    top: 0; left: 0; z-index:1100; height:76px; display:flex; align-items:center;
-}
-.dashboard-header .container { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-.logo { display:flex; align-items:center; font-weight:800; gap:0.75rem; text-decoration:none; padding-left:8px; }
-.logo svg{ margin-right:0.5rem; } .logo span{ color:#222; font-weight:800; }
-.dashboard-nav { display:flex; gap:12px; margin-left:16px; align-items:center; }
-.dashboard-nav a, .dashboard-nav button {
-    color:#fff; font-weight:600; text-decoration:none; padding:8px 14px; border-radius:22px;
-    background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.04);
-}
-.dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover {
-    background: rgba(255,255,255,0.12); transform: translateY(-1px);
-}
-.btn-secondary { background: linear-gradient(90deg,#fff,#f1fff1); color: #186a3d; border-radius:18px; padding:8px 12px; font-weight:700; border:1px solid rgba(255,255,255,0.06); }
+        :root {
+            --primary-green: #259a5a;
+            --primary-green-2: #1b8b45;
+            --header-bg: #259a5a;
+            --nav-white: #fff;
+            --muted-bg: #f4f4f9;
+            --container-max: 1200px;
+            --card-shadow: 0 12px 30px rgba(37, 154, 90, 0.06);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-top: 76px;
+            background-color: var(--muted-bg);
+        }
+        .container { max-width:var(--container-max); margin:0 auto; padding:0 24px; }
+        
+        .dashboard-header {
+            background: #259a5a;
+            color: #fff;
+            padding: 0;
+            box-shadow: 0 6px 18px rgba(37,154,90,0.12);
+            width: 100%;
+            position: fixed;
+            top: 0; left: 0; z-index:1100; height:76px; display:flex; align-items:center;
+        }
+        .dashboard-header .container { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .logo { display:flex; align-items:center; font-weight:800; gap:0.75rem; text-decoration:none; }
+        .logo svg{ margin-right:0.5rem; color: white;} .logo span{ color:#fff; font-weight:800; }
+        
+        .dashboard-nav { display:flex; gap:12px; margin-left:16px; align-items:center; }
+        .dashboard-nav a, .dashboard-nav button {
+            color:#fff; font-weight:600; text-decoration:none; padding:8px 14px; border-radius:22px;
+            background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+        }
+        .dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover {
+            background: rgba(255,255,255,0.12); transform: translateY(-1px);
+        }
+        
+        .btn {
+            background: linear-gradient(90deg,var(--primary-green),var(--primary-green-2));
+            color: #fff;
+            border: none;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.12s;
+            font-weight:700;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border-radius:18px; padding:8px 12px; font-weight:700; border:1px solid rgba(255,255,255,0.06); }
 
-        /* Primary button consistent with dashboard */
-.btn {
-    background: linear-gradient(90deg,var(--primary-green),var(--primary-green-2));
-    color: #fff;
-    border: none;
-    padding: 10px 14px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: transform 0.12s;
-    font-weight:700;
-}
-.btn:hover { transform: translateY(-2px); }
 
-/* Footer consistent with dashboard */
-.dashboard-footer {
-    margin-top: 3rem;
-    padding: 1.25rem 0;
-    background: #e8f5e9;
-    text-align: center;
-    color: #757575;
-    font-size: 0.95rem;
-    width: 100%;
-    box-sizing: border-box;
-}
+        .dashboard-footer {
+            margin-top: 3rem;
+            padding: 1.25rem 0;
+            background: #e8f5e9;
+            text-align: center;
+            color: #757575;
+            font-size: 0.95rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-/* rest of profile styles remain unchanged */
+        main .container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
 
-.profile-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
+        .profile-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
 
-.profile-avatar {
-    font-size: 3em;
-    margin-right: 20px;
-}
+        .profile-avatar {
+            font-size: 3em;
+            margin-right: 20px;
+        }
 
-.profile-info {
-    flex: 1;
-}
+        .profile-info { flex: 1; }
+        .profile-name { font-size: 1.8em; font-weight: 600; margin: 0; }
+        .profile-meta { font-size: 0.9em; color: #999; margin-top: 10px; }
+        .profile-actions { display: flex; gap: 10px; margin-top: 15px;}
 
-.profile-name {
-    font-size: 1.8em;
-    font-weight: 600;
-    margin: 0;
-}
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
 
-.profile-desc {
-    color: #666;
-    margin: 5px 0 15px;
-}
+        .profile-stat {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
 
-.profile-meta {
-    font-size: 0.9em;
-    color: #999;
-    margin-bottom: 15px;
-}
+        .profile-stat-number { font-size: 1.5em; font-weight: 600; margin: 0; }
+        .profile-stat-label { font-size: 0.9em; color: #666; }
 
-.profile-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 0.9em;
-}
-
-.btn-secondary {
-    background-color: #007bff;
-}
-
-.profile-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.profile-stat {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-stat-number {
-    font-size: 1.5em;
-    font-weight: 600;
-    margin: 0;
-}
-
-.profile-stat-label {
-    font-size: 0.9em;
-    color: #666;
-}
-
-.profile-tabs {
-    display: flex;
-    margin-top: 20px;
-    border-bottom: 2px solid #4caf50;
-}
-
-.profile-tab {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.profile-tab.active {
-    border-bottom: 2px solid #4caf50;
-    color: #4caf50;
-}
-
-.badges-section {
-    margin-top: 20px;
-}
-
-.badges-title {
-    font-size: 1.2em;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.badges-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.badge-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.badge-title {
-    font-size: 1.1em;
-    font-weight: 500;
-    margin: 0 0 5px;
-}
-
-.badge-type {
-    font-size: 0.9em;
-    color: #666;
-}
-
-.badge-date {
-    font-size: 0.8em;
-    color: #999;
-    margin-top: 5px;
-}
-
-.highlight {
-    border: 2px solid #ff9800;
-}
-
-.available {
-    opacity: 0.7;
-}
     </style>
 </head>
 <body>
@@ -234,7 +128,7 @@ body {
                 <a href="challenges.html">Challenges</a>
                 <a href="leaderboard.html">Leaderboard</a>
                 <a href="profile.html" class="active">Profile</a>
-                <button id="logout-btn" class="btn btn-secondary" style="margin-left:6px;">Log Out</button>
+                <button id="logout-btn" class="btn-secondary">Log Out</button>
             </nav>
         </div>
     </header>
@@ -243,79 +137,23 @@ body {
             <div class="profile-card">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
-                    <div class="profile-name">Alex Chen</div>
-                    <div class="profile-desc">Passionate about sustainability and making our planet a better place for future generations. Love hiking, renewable energy, and community gardening!</div>
-                    <div class="profile-meta">
-                        <span>alex.chen@ecolearn.org</span> &nbsp; | &nbsp; 
-                        <span>San Francisco, CA</span> &nbsp; | &nbsp; 
-                        <span>Joined September 2024</span>
+                    <div id="profile-name" class="profile-name">Loading...</div>
+                    <div id="profile-meta" class="profile-meta">
+                        <span>loading...</span>
                     </div>
                     <div class="profile-actions">
                         <button class="btn" onclick="alert('Edit Profile feature coming soon!')">Edit Profile</button>
-                        <button class="btn btn-secondary" onclick="alert('Share feature coming soon!')">Share</button>
                     </div>
                 </div>
             </div>
             <div class="profile-stats">
                 <div class="profile-stat">
-                    <div class="profile-stat-number">285</div>
+                    <div id="total-points" class="profile-stat-number">0</div>
                     <div class="profile-stat-label">Total Points</div>
                 </div>
                 <div class="profile-stat">
-                    <div class="profile-stat-number">4</div>
-                    <div class="profile-stat-label">Badges Earned</div>
-                </div>
-                <div class="profile-stat">
-                    <div class="profile-stat-number">#15</div>
-                    <div class="profile-stat-label">Global Rank</div>
-                </div>
-                <div class="profile-stat">
-                    <div class="profile-stat-number">7</div>
-                    <div class="profile-stat-label">Day Streak</div>
-                </div>
-            </div>
-            <div class="profile-tabs">
-                <div class="profile-tab active">Badges</div>
-                <div class="profile-tab">Challenges</div>
-                <div class="profile-tab">Impact</div>
-                <div class="profile-tab">Progress</div>
-            </div>
-            <div class="badges-section">
-                <div class="badges-title">Earned Badges (4)</div>
-                <div class="badges-grid">
-                    <div class="badge-card">
-                        <div class="badge-title">Eco Warrior</div>
-                        <div class="badge-type">Complete 5 environmental challenges</div>
-                        <div class="badge-date">2024-05-15</div>
-                    </div>
-                    <div class="badge-card">
-                        <div class="badge-title">Tree Planter</div>
-                        <div class="badge-type">Plant your first tree</div>
-                        <div class="badge-date">2024-05-20</div>
-                    </div>
-                    <div class="badge-card highlight">
-                        <div class="badge-title">Waste Master</div>
-                        <div class="badge-type">Complete zero waste challenge</div>
-                        <div class="badge-date">2024-06-10</div>
-                    </div>
-                    <div class="badge-card">
-                        <div class="badge-title">Green Thumb</div>
-                        <div class="badge-type">Successfully grow your own food</div>
-                        <div class="badge-date">2024-06-25</div>
-                    </div>
-                </div>
-            </div>
-            <div class="badges-section">
-                <div class="badges-title">Available Badges (2)</div>
-                <div class="badges-grid">
-                    <div class="badge-card available">
-                        <div class="badge-title">Energy Saver</div>
-                        <div class="badge-type">Complete energy efficiency challenge</div>
-                    </div>
-                    <div class="badge-card available">
-                        <div class="badge-title">Community Champion</div>
-                        <div class="badge-type">Lead 5 community initiatives</div>
-                    </div>
+                    <div id="leaderboard-rank" class="profile-stat-number">--</div>
+                    <div class="profile-stat-label">Your Rank</div>
                 </div>
             </div>
         </div>
@@ -323,8 +161,116 @@ body {
     <footer class="dashboard-footer">
         © 2025 EcoLearn Platform - Learning sustainability through action
     </footer>
-    <script>
-        (function(){ var btn = document.getElementById('logout-btn'); if(btn) btn.addEventListener('click', function(){ window.location.href='registeration.html'; }); })();
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
+          authDomain: "myloginapp-212fb.firebaseapp.com",
+          projectId: "myloginapp-212fb",
+          storageBucket: "myloginapp-212fb.appspot.com",
+          messagingSenderId: "407662156233",
+          appId: "1:407662156233:web:d419bc320091e40e827018",
+          measurementId: "G-P5JY41QFSS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const profileName = document.getElementById('profile-name');
+        const profileMeta = document.getElementById('profile-meta');
+        const totalPoints = document.getElementById('total-points');
+        const logoutBtn = document.getElementById('logout-btn');
+        const leaderboardRank = document.getElementById('leaderboard-rank');
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in
+                // IMPORTANT: The data path has been changed for better performance.
+                const userProfileRef = doc(db, "profiles", user.uid);
+                
+                try {
+                    // 1. Get the current user's profile
+                    const userDocSnap = await getDoc(userProfileRef);
+                    if (!userDocSnap.exists()) {
+                        profileName.textContent = "Profile not found. Please register again.";
+                        return;
+                    }
+                    const userData = userDocSnap.data();
+                    
+                    // Populate profile with user data
+                    profileName.textContent = userData.username;
+                    totalPoints.textContent = userData.points || 0;
+                    
+                    const creationDate = new Date(user.metadata.creationTime).toLocaleDateString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric'
+                    });
+
+                    profileMeta.innerHTML = `
+                        <span>${userData.email}</span> &nbsp; | &nbsp; 
+                        <span>${userData.college}</span> &nbsp; | &nbsp; 
+                        <span>Joined ${creationDate}</span>
+                    `;
+
+                    // 2. Calculate user's rank
+                    const profilesCollectionRef = collection(db, "profiles");
+                    const q = query(profilesCollectionRef, orderBy("points", "desc"));
+                    const allUsersSnapshot = await getDocs(q);
+
+                    let rank = 0;
+                    allUsersSnapshot.docs.forEach((doc, index) => {
+                        if (doc.id === user.uid) {
+                            rank = index + 1;
+                        }
+                    });
+
+                    if (rank > 0) {
+                        leaderboardRank.textContent = `#${rank}`;
+                    } else {
+                        leaderboardRank.textContent = "N/A";
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                    profileName.textContent = "Error loading profile";
+                }
+            } else {
+                // User is signed out
+                window.location.href = 'registration.html';
+            }
+        });
+        
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // The onAuthStateChanged listener will handle the redirect
+            } catch (error) {
+                console.error("Error signing out:", error);
+            }
+        });
+
     </script>
 </body>
 </html>
+```
+
+### **Action Required: Update `registration.html`**
+
+For the profile page to find your user data, you **must** update your `registration.html` file to save profiles to the new, more efficient location.
+
+1.  Open your `registration.html` file.
+2.  Find the `registerForm` event listener in the `<script>` section.
+3.  **Replace** this line:
+    ```javascript
+    await setDoc(doc(db, "artifacts/global/users", user.uid, "profile", "details"), {
+    ```
+4.  **With this new line:**
+    ```javascript
+    await setDoc(doc(db, "profiles", user.uid), {
+    
+

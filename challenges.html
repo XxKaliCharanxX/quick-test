@@ -2,43 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoLearn Platform - Challenges</title>
+    <title>EcoLearn - Challenges</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-	:root {
-		--primary-green: #259a5a;
-		--primary-green-2: #1b8b45;
-		--header-bg-start: #259a5a;
-		--header-height: 76px;
-		--nav-white: #fff;
-		--muted: #6b6b6b;
-		--container-max: 1200px;
-		--card-shadow: 0 12px 30px rgba(40,167,69,0.08);
-	}
-	body { font-family: 'Poppins', sans-serif; margin: 0; padding-top: var(--header-height); background: #f7fbf7; color: #222; }
-	.dashboard-header { background: var(--header-bg-start); color: var(--nav-white); box-shadow: 0 6px 18px rgba(37,154,90,0.12); width: 100%; position: fixed; top: 0; left: 0; z-index: 1100; height: var(--header-height); display: flex; align-items: center; }
-	.dashboard-header .container { width: 90%; max-width: var(--container-max); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-	.logo { display: flex; align-items: center; font-weight: 800; font-size: 1.15rem; color: var(--nav-white); text-decoration: none; }
-	.logo svg { margin-right: 0.5rem; }
-	.dashboard-nav { display: flex; gap: 12px; align-items: center; }
-	.dashboard-nav a, .dashboard-nav button { color: var(--nav-white); font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 22px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.04); cursor: pointer; font-size: 0.95rem; transition: background 0.18s, transform 0.12s; }
-	.dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
-	.btn-secondary { background: linear-gradient(90deg,#fff,#f1fff1); color: #186a3d; border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 18px; font-weight:700; }
-	.container { width: 90%; max-width: var(--container-max); margin: 0 auto; }
-	.page-header { text-align: center; margin: 28px 0 18px; padding-top: 6px; }
-	.page-header h1 { font-size: 2.2rem; margin: 0; color: #186a3d; font-weight: 800; }
-	.subtitle { font-size: 1rem; color: var(--muted); margin: 8px 0 18px; }
-	.panel { background: #fff; border: 1px solid #e8f5e9; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: var(--card-shadow); }
-	.panel-header { display: flex; align-items: center; gap: 10px; font-weight: 700; color: #186a3d; font-size: 1.2rem; margin-bottom: 16px; }
-	.challenges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-	.challenge-card { background-color: #fff; border-radius: 12px; padding: 20px; transition: transform 0.18s, box-shadow 0.18s; box-shadow: var(--card-shadow); border: 1px solid #e8f5e9; display: flex; flex-direction: column; gap: 10px; }
-	.challenge-card:hover { transform: translateY(-6px); box-shadow: 0 20px 45px rgba(40,167,69,0.1); }
-	.challenge-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 8px; color: #222; }
-	.challenge-desc { font-size: 0.9rem; color: #555; margin: 8px 0 12px; line-height: 1.6; flex-grow: 1; }
-	.btn { background: linear-gradient(90deg,var(--primary-green),var(--primary-green-2)); color: #fff; border: none; padding: 12px 16px; font-size: 0.9rem; cursor: pointer; border-radius: 8px; transition: transform 0.12s; width: 100%; text-align: center; box-shadow: 0 6px 18px rgba(40,167,69,0.1); font-weight:700; text-decoration: none; }
-	.btn:hover { transform: translateY(-2px); }
-</style>
+        :root {
+            --primary-green: #259a5a;
+            --primary-green-2: #1b8b45;
+            --header-bg: #259a5a;
+            --nav-white: #fff;
+            --muted-bg: #f4f4f9;
+            --container-max: 1200px;
+            --card-shadow: 0 12px 30px rgba(37, 154, 90, 0.06);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-top: 76px;
+            background-color: var(--muted-bg);
+        }
+        .container { max-width:var(--container-max); margin:0 auto; padding:0 24px; }
+        
+        .dashboard-header {
+            background: #259a5a;
+            color: #fff;
+            padding: 0;
+            box-shadow: 0 6px 18px rgba(37,154,90,0.12);
+            width: 100%;
+            position: fixed;
+            top: 0; left: 0; z-index:1100; height:76px; display:flex; align-items:center;
+        }
+        .dashboard-header .container { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .logo { display:flex; align-items:center; font-weight:800; gap:0.75rem; text-decoration:none; }
+        .logo svg{ margin-right:0.5rem; color: white;} .logo span{ color:#fff; font-weight:800; }
+        
+        .dashboard-nav { display:flex; gap:12px; margin-left:16px; align-items:center; }
+        .dashboard-nav a, .dashboard-nav button {
+            color:#fff; font-weight:600; text-decoration:none; padding:8px 14px; border-radius:22px;
+            background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: background 0.18s, transform 0.12s;
+        }
+        .dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover {
+            background: rgba(255,255,255,0.12); transform: translateY(-1px);
+        }
+        .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border-radius:18px; padding:8px 12px; font-weight:700; border:1px solid rgba(255,255,255,0.06); }
+
+        main .container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .page-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #333; }
+        .page-header p { font-size: 1.1rem; color: #666; margin-top: 0; max-width: 600px; margin-left: auto; margin-right: auto;}
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .challenge-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(37, 154, 90, 0.1);
+        }
+
+        .challenge-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        .challenge-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+        .challenge-card-content h2 {
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+        .challenge-card-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .difficulty-display {
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+        .challenge-card-footer {
+            padding: 0 1.5rem 1.5rem;
+        }
+        .btn-start-quiz {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            padding: 0.8rem 1rem;
+            background: linear-gradient(90deg, var(--primary-green), var(--primary-green-2));
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header class="dashboard-header">
@@ -52,51 +131,107 @@
                 <a href="challenges.html" class="active">Challenges</a>
                 <a href="leaderboard.html">Leaderboard</a>
                 <a href="profile.html">Profile</a>
-                <button id="logout-btn" class="btn-secondary" style="margin-left:6px;">Log Out</button>
+                <button id="logout-btn" class="btn-secondary">Log Out</button>
             </nav>
         </div>
     </header>
     <main>
         <div class="container">
             <div class="page-header">
-                <h1>Test Your Knowledge</h1>
-                <p class="subtitle">Choose a topic to start an adaptive quiz. The difficulty will adjust based on your performance!</p>
+                <h1>Quiz Challenges</h1>
+                <p>Test your knowledge on various environmental topics, improve your eco-literacy, and earn points for every correct answer!</p>
             </div>
-            <div class="panel">
-                <div class="panel-header"><span>🌿 Available Quizzes</span></div>
-                <div class="challenges-grid">
-                    <div class="challenge-card">
-                        <h3 class="challenge-title">Renewable Energy</h3>
-                        <p class="challenge-desc">Explore the world of solar, wind, and hydro power. How much do you know about clean energy?</p>
-                        <a href="quiz.html?topic=Renewable Energy" class="btn">Start Quiz</a>
+            <div class="challenges-grid">
+                <a href="quiz.html?topic=Renewable Energy" class="challenge-card" data-topic="Renewable Energy">
+                    <div class="challenge-card-image" style="background-image: url('https://placehold.co/600x400/259a5a/FFFFFF?text=Energy')"></div>
+                    <div class="challenge-card-content">
+                        <h2>Renewable Energy</h2>
+                        <p>Explore the world of solar, wind, and hydro power. How much do you know about clean energy sources?</p>
+                        <div class="difficulty-display">Your Difficulty: <span class="difficulty-level">...</span></div>
                     </div>
-                    <div class="challenge-card">
-                        <h3 class="challenge-title">Waste Reduction & Recycling</h3>
-                        <p class="challenge-desc">Test your knowledge on recycling, composting, and the principles of reducing waste in your daily life.</p>
-                        <a href="quiz.html?topic=Waste Reduction and Recycling" class="btn">Start Quiz</a>
+                    <div class="challenge-card-footer">
+                        <span class="btn-start-quiz">Start Quiz</span>
                     </div>
-                    <div class="challenge-card">
-                        <h3 class="challenge-title">Climate Change Science</h3>
-                        <p class="challenge-desc">How well do you understand the science behind global warming and its impact on our planet?</p>
-                        <a href="quiz.html?topic=Climate Change Science" class="btn">Start Quiz</a>
+                </a>
+                <a href="quiz.html?topic=Waste Management" class="challenge-card" data-topic="Waste Management">
+                    <div class="challenge-card-image" style="background-image: url('https://placehold.co/600x400/1E88E5/FFFFFF?text=Waste')"></div>
+                    <div class="challenge-card-content">
+                        <h2>Waste Management</h2>
+                        <p>Learn about recycling, composting, and the principles of a circular economy. Test your sorting skills!</p>
+                        <div class="difficulty-display">Your Difficulty: <span class="difficulty-level">...</span></div>
                     </div>
-                    <div class="challenge-card">
-                        <h3 class="challenge-title">Water Conservation</h3>
-                        <p class="challenge-desc">Dive into the importance of water, one of our most precious resources. Test your conservation knowledge.</p>
-                        <a href="quiz.html?topic=Water Conservation" class="btn">Start Quiz</a>
+                    <div class="challenge-card-footer">
+                        <span class="btn-start-quiz">Start Quiz</span>
                     </div>
-                </div>
+                </a>
+                <a href="quiz.html?topic=Climate Change" class="challenge-card" data-topic="Climate Change">
+                    <div class="challenge-card-image" style="background-image: url('https://placehold.co/600x400/E53935/FFFFFF?text=Climate')"></div>
+                    <div class="challenge-card-content">
+                        <h2>Climate Change</h2>
+                        <p>Understand the science behind global warming, greenhouse gases, and their impact on our planet.</p>
+                         <div class="difficulty-display">Your Difficulty: <span class="difficulty-level">...</span></div>
+                    </div>
+                     <div class="challenge-card-footer">
+                        <span class="btn-start-quiz">Start Quiz</span>
+                    </div>
+                </a>
+                 <a href="quiz.html?topic=Sustainable Agriculture" class="challenge-card" data-topic="Sustainable Agriculture">
+                    <div class="challenge-card-image" style="background-image: url('https://placehold.co/600x400/7CB342/FFFFFF?text=Farming')"></div>
+                    <div class="challenge-card-content">
+                        <h2>Sustainable Agriculture</h2>
+                        <p>Discover farming techniques that protect the environment, public health, and animal welfare.</p>
+                         <div class="difficulty-display">Your Difficulty: <span class="difficulty-level">...</span></div>
+                    </div>
+                     <div class="challenge-card-footer">
+                        <span class="btn-start-quiz">Start Quiz</span>
+                    </div>
+                </a>
             </div>
         </div>
     </main>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        const firebaseConfig = { apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk", authDomain: "myloginapp-212fb.firebaseapp.com", projectId: "myloginapp-212fb", storageBucket: "myloginapp-212fb.appspot.com", messagingSenderId: "407662156233", appId: "1:407662156233:web:d419bc320091e40e827018" };
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
+          authDomain: "myloginapp-212fb.firebaseapp.com",
+          projectId: "myloginapp-212fb",
+          storageBucket: "myloginapp-212fb.appspot.com",
+          messagingSenderId: "407662156233",
+          appId: "1:407662156233:web:d419bc320091e0e827018",
+          measurementId: "G-P5JY41QFSS"
+        };
+        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        onAuthStateChanged(auth, user => { if (!user) window.location.href = 'registration.html'; });
-        document.getElementById('logout-btn')?.addEventListener('click', () => signOut(auth));
+        const db = getFirestore(app);
+
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'registration.html';
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userProfileRef = doc(db, "profiles", user.uid);
+                const docSnap = await getDoc(userProfileRef);
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    const difficulties = userData.quizDifficulty || {};
+                    
+                    document.querySelectorAll('.challenge-card').forEach(card => {
+                        const topic = card.dataset.topic;
+                        const level = difficulties[topic] || 3;
+                        card.querySelector('.difficulty-level').textContent = `Level ${level}/5`;
+                    });
+                }
+            } else {
+                window.location.href = 'registration.html';
+            }
+        });
     </script>
 </body>
 </html>

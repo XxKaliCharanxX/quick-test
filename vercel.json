@@ -1,13 +1,17 @@
 {
-  "functions": {
-    "api/get-question.js": {
-      "memory": 1024
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/get-question",
-      "destination": "/api/get-question.js"
-    }
-  ]
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "functions": {
+        "api/get-question.js": {
+            "memory": 1024,
+            "maxDuration": 15
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/api/get-question",
+            "destination": "/api/get-question.js"
+        }
+    ]
 }
+

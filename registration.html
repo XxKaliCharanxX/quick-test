@@ -255,14 +255,13 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
           authDomain: "myloginapp-212fb.firebaseapp.com",
           projectId: "myloginapp-212fb",
           storageBucket: "myloginapp-212fb.appspot.com",
           messagingSenderId: "407662156233",
-          appId: "1:407662156233:web:d419bc320091e40e827018",
+          appId: "1:407662156233:web:d419bc320091e0e827018",
           measurementId: "G-P5JY41QFSS"
         };
 
@@ -317,14 +316,19 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Create user profile
-                await setDoc(doc(db, "artifacts/global/users", user.uid, "profile", "details"), {
+                // Create user profile in the "profiles" collection
+                await setDoc(doc(db, "profiles", user.uid), {
                     username: username,
                     email: email,
                     college: college,
                     points: 0,
                     level: 1,
-                    difficulty: 'easy'
+                    quizDifficulty: { // Initialize topic difficulties
+                        "Renewable Energy": 3,
+                        "Waste Management": 3,
+                        "Climate Change": 3,
+                        "Sustainable Agriculture": 3
+                    }
                 });
 
                 // Create username mapping for login
@@ -334,11 +338,12 @@
                 });
 
                 await sendEmailVerification(user);
-                showMessage("Registration successful! Please check your email to verify your account before logging in.", false);
+                showMessage("Registration successful! Redirecting to your new dashboard...", false);
                 
-                // Optional: Redirect or clear form
-                registerForm.reset();
-                loginToggle.click();
+                // Redirect to dashboard after a short delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
 
 
             } catch (error) {
@@ -379,7 +384,7 @@
             }
         });
 
-        // Redirect if already logged in
+        // Redirect if already logged in and verified
         onAuthStateChanged(auth, (user) => {
             if (user && user.emailVerified) {
                 window.location.href = 'dashboard.html';
