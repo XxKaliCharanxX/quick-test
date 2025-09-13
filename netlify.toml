@@ -11,7 +11,7 @@
   publish = "/"
 
 [functions]
-  # Specifies the version of Node.js to use for your functions.
+  # Specifies the bundler to use for your functions.
+  # The esbuild bundler is recommended for its speed.
   node_bundler = "esbuild"
-  [functions.node_bundler]
-    target = "node18"
+
