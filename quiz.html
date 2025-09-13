@@ -160,10 +160,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // --- ACTION REQUIRED ---
-        // Paste your Gemini API Key here.
-        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
         
         const firebaseConfig = {
           apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
@@ -171,7 +167,7 @@
           projectId: "myloginapp-212fb",
           storageBucket: "myloginapp-212fb.appspot.com",
           messagingSenderId: "407662156233",
-          appId: "1:407662156233:web:d419bc320091e0e827018",
+          appId: "1:407662_"web":d419bc320091e0e827018",
           measurementId: "G-P5JY41QFSS"
         };
         
@@ -207,20 +203,23 @@
             startQuizBtn.disabled = true;
 
             const difficultyName = difficultyMap[numericDifficulty - 1];
-            const schema = { type: "ARRAY", items: { type: "OBJECT", properties: { "question": { "type": "STRING" }, "options": { type: "ARRAY", items: { "type": "STRING" } }, "correctAnswer": { "type": "STRING" } }, required: ["question", "options", "correctAnswer"] } };
-            const systemPrompt = "You are an expert quiz master. You must generate a complete quiz of 5 unique questions based on the topic and difficulty provided by the user. Your response must be a JSON array of 5 objects, matching the provided schema. Do not wrap the array in any other object.";
-            const userQuery = `Generate an array of 5 unique trivia questions on the topic of "${topic}" suitable for a ${difficultyName} difficulty level.`;
-            const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
-            const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json", responseSchema: schema } };
-
+            
             try {
-                const response = await fetch(geminiApiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error(`API error: ${response.statusText}`);
-                const data = await response.json();
-                const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!jsonText) throw new Error("Invalid response structure from API.");
-                questions = JSON.parse(jsonText);
+                // ** THIS IS THE DEPLOYMENT VERSION - IT CALLS THE SERVERLESS FUNCTION **
+                const response = await fetch('/api/get-question', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ difficulty: difficultyName, topic: topic })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch questions from server.');
+                }
+                
+                questions = await response.json();
                 return true;
+
             } catch (error) {
                 console.error('Error fetching questions:', error);
                 introError.textContent = `Failed to generate quiz. ${error.message}`;
@@ -235,7 +234,6 @@
             const question = questions[currentQuestionIndex];
             questionText.textContent = question.question;
             optionsContainer.innerHTML = '';
-            // Shuffle options for better experience
             const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
             shuffledOptions.forEach(optionText => {
                 const option = document.createElement('div');
@@ -268,39 +266,31 @@
             quizScreen.style.display = 'none';
             resultsScreen.style.display = 'block';
 
-            const pointsEarned = score * 10; // 10 points per correct answer
+            const pointsEarned = score * 10;
             let newDifficultyLevel = currentDifficultyLevel;
 
-            if (score <= 2) { // Score of 2/5 or less
+            if (score <= 2) {
                 newDifficultyLevel = Math.max(1, currentDifficultyLevel - 1);
-            } else if (score >= 4) { // Score of 4/5 or more
+            } else if (score >= 4) {
                 newDifficultyLevel = Math.min(5, currentDifficultyLevel + 1);
             }
-            // If score is 3/5, difficulty remains the same
 
             resultsSummary.textContent = `You scored ${score} out of 5 and earned ${pointsEarned} points. Your difficulty for this topic is now Level ${newDifficultyLevel}/5.`;
 
             try {
                 const userProfileRef = doc(db, "profiles", currentUser.uid);
-                // Use dot notation for nested field updates
                 const updatePayload = {
                     points: increment(pointsEarned),
                     [`quizDifficulty.${topic}`]: newDifficultyLevel
                 };
                 await updateDoc(userProfileRef, updatePayload);
-            } catch (error)
-                {
+            } catch (error) {
                 console.error("Error updating profile:", error);
                 resultsSummary.textContent += " (Could not save progress)";
             }
         }
         
         startQuizBtn.addEventListener('click', async () => {
-             if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE" || !GEMINI_API_KEY) {
-                introError.textContent = 'Error: Gemini API key is not set. Please add it to the script.';
-                introError.style.display = 'block';
-                return;
-            }
             const success = await fetchQuestions(currentDifficultyLevel);
             if(success) {
                 introScreen.style.display = 'none';
