@@ -89,7 +89,7 @@
         .error-message {
             background: var(--incorrect-bg);
             border: 1px solid var(--incorrect-border);
-            color: var(--incorrect-border);
+            color: #b71c1c;
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
@@ -195,9 +195,8 @@
         let currentQuestionIndex = 0;
         let score = 0;
         const topic = new URLSearchParams(window.location.search).get('topic');
-        let currentDifficultyLevel = 3; // Default difficulty (1-5)
+        let currentDifficultyLevel = 3;
         const difficultyMap = ["Very Easy", "Easy", "Normal", "Hard", "Very Hard"];
-
 
         async function fetchQuestions(numericDifficulty) {
             startQuizBtn.textContent = 'Generating...';
@@ -206,7 +205,6 @@
             const difficultyName = difficultyMap[numericDifficulty - 1];
             
             try {
-                // ** THIS IS THE DEPLOYMENT VERSION - IT CALLS THE SERVERLESS FUNCTION **
                 const response = await fetch('/api/get-question', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -215,14 +213,12 @@
 
                 if (!response.ok) {
                     let errorMessage = `Server error: ${response.status}`;
+                    const responseText = await response.text();
                     try {
-                        // Try to parse a JSON error response from our function
-                        const errorData = await response.json();
+                        const errorData = JSON.parse(responseText);
                         errorMessage = errorData.error || JSON.stringify(errorData);
                     } catch (e) {
-                        // If the response isn't JSON (e.g., a Vercel error page), use the raw text
-                        const errorText = await response.text();
-                        if (errorText) errorMessage = errorText;
+                        if (responseText) errorMessage = responseText;
                     }
                     throw new Error(errorMessage);
                 }
