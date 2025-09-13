@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/get-question.js": {
+      "memory": 1024
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/get-question",
+      "destination": "/api/get-question.js"
+    }
+  ]
+}
