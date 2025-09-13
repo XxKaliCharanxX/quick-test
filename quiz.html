@@ -3,64 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adaptive Environmental Quiz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>EcoLearn - Quiz Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #052e16; }
-        .quiz-card { background-color: #064e3b; border: 1px solid #047857; }
-        .btn-primary { background-color: #10b981; transition: background-color 0.2s; }
-        .btn-primary:hover:not(:disabled) { background-color: #34d399; }
-        .btn-option { background-color: #047857; transition: all 0.2s ease-in-out; }
-        .btn-option:hover:not(:disabled) { background-color: #059669; transform: translateY(-2px); }
-        .btn-option.correct { background-color: #16a34a; border-color: #22c55e; }
-        .btn-option.incorrect { background-color: #dc2626; border-color: #ef4444; }
+        :root {
+            --primary-green: #259a5a;
+            --primary-green-2: #1b8b45;
+            --header-bg-start: #259a5a;
+            --header-height: 76px;
+            --nav-white: #fff;
+            --muted: #6b6b6b;
+            --container-max: 1200px;
+            --card-shadow: 0 12px 30px rgba(37, 154, 90, 0.06);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-top: var(--header-height);
+            background: #f7fbf7;
+            color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Header from dashboard */
+        .dashboard-header {
+            background: var(--header-bg-start);
+            color: var(--nav-white);
+            box-shadow: 0 6px 18px rgba(37,154,90,0.12);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1100;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard-header .container {
+            width: 90%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--nav-white);
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo svg { margin-right: 0.5rem; }
+
+        .dashboard-nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .dashboard-nav a, .dashboard-nav button {
+            color: var(--nav-white);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.18s, transform 0.12s;
+        }
+        .dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-1px);
+        }
+        
+        /* Quiz container */
+        .quiz-wrapper {
+            width: 100%;
+            max-width: 700px;
+            margin: 2rem 1rem;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(37, 154, 90, 0.08);
+        }
+
+        #quiz-container h1 {
+            color: #222;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+        }
+
+        #quiz-container p {
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        #start-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, var(--primary-green), var(--primary-green-2));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 154, 90, 0.2);
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none; /* Hidden by default */
+        }
+        
+        /* Quiz question styles */
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        #options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+        
+        .option-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            text-align: left;
+            background-color: #f7fbf7;
+            border: 2px solid #e8f5e9;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary-green);
+            background-color: #e8f5e9;
+        }
+        
+        .option-btn.correct { background-color: #dcedc8; border-color: #7cb342; }
+        .option-btn.incorrect { background-color: #ffcdd2; border-color: #e57373; }
+        .option-btn:disabled { cursor: not-allowed; }
+        
+        #feedback-text {
+            text-align: center;
+            font-weight: 600;
+            margin-top: 1rem;
+            height: 24px;
+        }
+
+        #results-container { text-align: center; }
+
+        #results-container h2 { font-size: 2rem; }
+
+        #results-container button {
+             display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, var(--primary-green), var(--primary-green-2));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
     </style>
 </head>
-<body class="text-green-100">
-    <header class="bg-[#259a5a] text-white shadow-md w-full fixed top-0 left-0 z-10 h-[76px] flex items-center">
-        <div class="container mx-auto w-11/12 max-w-[1200px] flex items-center justify-between">
-            <a href="dashboard.html" class="flex items-center font-extrabold text-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path></svg>
+<body>
+
+    <header class="dashboard-header">
+        <div class="container">
+            <a href="dashboard.html" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path></svg>
                 <span>EcoLearn</span>
             </a>
+            <nav class="dashboard-nav">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="challenges.html" class="active">Challenges</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="profile.html">Profile</a>
+            </nav>
         </div>
     </header>
 
-    <main class="flex items-center justify-center min-h-screen pt-[76px] p-4">
-        <div class="w-full max-w-2xl mx-auto">
-            <div id="quiz-container" class="quiz-card rounded-2xl shadow-2xl p-6 md:p-8">
-                <div id="start-screen" class="text-center">
-                    <h1 id="quiz-topic-title" class="text-3xl font-bold text-emerald-300 mb-4">Loading Quiz...</h1>
-                    <p class="text-xl mb-6 text-emerald-200">Ready to test your knowledge?</p>
-                    <button id="start-btn" class="btn btn-primary text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105">Start Quiz</button>
-                </div>
-                <div id="quiz-screen" class="hidden">
-                    <div class="mb-4">
-                        <div class="flex justify-between items-center mb-2">
-                             <span id="level-text" class="text-sm font-semibold text-emerald-200">Level 3</span>
-                             <span id="progress-text" class="text-sm font-semibold text-emerald-200">Question 1 / 5</span>
-                        </div>
-                        <div class="w-full bg-green-900 rounded-full h-2.5">
-                            <div id="progress-bar" class="bg-emerald-400 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
-                        </div>
-                    </div>
-                    <h2 id="question" class="text-2xl font-semibold my-6 text-white"></h2>
-                    <div id="options" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-                <div id="results-screen" class="hidden text-center">
-                    <h2 class="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
-                    <div id="score-text" class="mb-2"></div>
-                    <p id="points-earned" class="text-lg text-emerald-200 font-bold mb-4"></p>
-                    <p id="difficulty-feedback" class="text-md mb-6 text-emerald-300"></p>
-                    <a href="challenges.html" class="btn btn-primary text-white font-bold py-3 px-8 rounded-full shadow-lg inline-block">Choose Another Quiz</a>
-                </div>
-                <div id="error-message" class="hidden bg-red-800 border-red-600 text-red-100 px-4 py-3 rounded-lg my-4"></div>
-                <div id="loader" class="hidden text-center py-8">
-                     <svg class="animate-spin h-8 w-8 text-emerald-300 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                     <p class="mt-2 text-emerald-200">Generating your unique questions...</p>
-                </div>
-            </div>
+    <main class="quiz-wrapper">
+        <div id="quiz-container">
+            <h1 id="quiz-topic">Quiz Topic</h1>
+            <p>Ready to test your knowledge?</p>
+            <button id="start-btn">Start Quiz</button>
+            <div id="error-message" class="error-message"></div>
         </div>
     </main>
 
@@ -69,166 +236,207 @@
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- IMPORTANT: PASTE YOUR FIREBASE AND GEMINI KEYS HERE ---
-        const firebaseConfig = { apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk", authDomain: "myloginapp-212fb.firebaseapp.com", projectId: "myloginapp-212fb", storageBucket: "myloginapp-212fb.appspot.com", messagingSenderId: "407662156233", appId: "1:407662156233:web:d419bc320091e40e827018" };
-        const GEMINI_API_KEY = ""; // PASTE YOUR GEMINI API KEY HERE
+        // IMPORTANT: Replace with your actual Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-        // --- Initialize Firebase ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = 'ecolearn-app';
-        let currentUserId = null;
 
-        // --- DOM Elements ---
-        const [startScreen, quizScreen, resultsScreen, loader, errorMessageEl] = 
-            ['start-screen', 'quiz-screen', 'results-screen', 'loader', 'error-message'].map(id => document.getElementById(id));
-        const [startBtn, questionEl, optionsEl, progressText, progressBar, levelText, scoreText, difficultyFeedback, pointsEarnedEl, quizTopicTitle] = 
-            ['start-btn', 'question', 'options', 'progress-text', 'progress-bar', 'level-text', 'score-text', 'difficulty-feedback', 'points-earned', 'quiz-topic-title'].map(id => document.getElementById(id));
-        
-        // --- State Variables ---
-        const QUIZ_LENGTH = 5;
+        const quizContainer = document.getElementById('quiz-container');
+        const startBtn = document.getElementById('start-btn');
+        const topicEl = document.getElementById('quiz-topic');
+        const errorEl = document.getElementById('error-message');
+
         let questions = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let difficultyLevel = 3; // Default level
-        let quizTopic = 'General Environment';
+        let currentUser = null;
+        let userDifficulty = 'easy'; // Default difficulty
+        let quizTopic = 'General Environment'; // Default topic
 
-        // --- App Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            quizTopic = urlParams.get('topic') || 'General Environment';
-            quizTopicTitle.textContent = quizTopic;
-
-            onAuthStateChanged(auth, async user => {
-                if (user) {
-                    currentUserId = user.uid;
-                    const userProfileRef = doc(db, `/artifacts/${appId}/users/${currentUserId}/profile`, 'details');
-                    const docSnap = await getDoc(userProfileRef);
-                    if (docSnap.exists() && docSnap.data().difficultyLevel) {
-                        difficultyLevel = docSnap.data().difficultyLevel;
-                    }
-                } else {
-                    window.location.href = 'registration.html';
-                }
-            });
-            startBtn.addEventListener('click', startQuiz);
-        });
-
-        async function startQuiz() {
-            if (!GEMINI_API_KEY) {
-                showError("Gemini API key is not set. Please configure it in the script.");
-                return;
-            }
-            questions = []; currentQuestionIndex = 0; score = 0;
-            startScreen.classList.add('hidden');
-            resultsScreen.classList.add('hidden');
-            errorMessageEl.classList.add('hidden');
-            loader.classList.remove('hidden');
-
-            const difficultyString = difficultyLevel <= 2 ? 'easy' : difficultyLevel >= 4 ? 'hard' : 'normal';
-            
-            try {
-                questions = await generateQuestions(difficultyString, quizTopic);
-                loader.classList.add('hidden');
-                quizScreen.classList.remove('hidden');
-                displayCurrentQuestion();
-            } catch (error) {
-                showError(error.message);
-            }
+        function showError(message) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
         }
 
         async function generateQuestions(difficulty, topic) {
-            const schema = { type: "ARRAY", items: { type: "OBJECT", properties: { "question": { "type": "STRING" }, "options": { "type": "ARRAY", "items": { "type": "STRING" } }, "correctAnswer": { "type": "STRING" } }, required: ["question", "options", "correctAnswer"] } };
-            const systemPrompt = "You are an expert quiz master. You must generate a complete quiz of 5 unique questions based on the topic and difficulty provided by the user. Your response must be a JSON array of 5 objects, matching the provided schema. Do not wrap the array in any other object.";
-            const userQuery = `Generate an array of 5 unique trivia questions on the topic of "${topic}" suitable for a ${difficulty} difficulty level. Ensure the options are distinct and there is only one correct answer.`;
+            startBtn.disabled = true;
+            startBtn.textContent = 'Generating Questions...';
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
-            const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] }, generationConfig: { responseMimeType: "application/json", responseSchema: schema } };
+            try {
+                // Call our own secure Vercel Function
+                const functionUrl = '/api/get-question';
 
-            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            if (!response.ok) throw new Error('Failed to generate questions from the API.');
-            
-            const data = await response.json();
-            const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!jsonText) throw new Error("Invalid response structure from API.");
-            
-            const questionsArray = JSON.parse(jsonText);
-            if (!Array.isArray(questionsArray) || questionsArray.length !== QUIZ_LENGTH) throw new Error('Received invalid question data from the server.');
-            
-            return questionsArray;
+                const response = await fetch(functionUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ difficulty, topic })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to generate questions.');
+                }
+                
+                questions = await response.json();
+                if (!questions || questions.length === 0) {
+                     throw new Error('No questions were generated. Please try again.');
+                }
+                
+                startQuiz();
+
+            } catch (error) {
+                console.error('Error generating questions:', error);
+                showError(error.message);
+                startBtn.disabled = false;
+                startBtn.textContent = 'Try Again';
+            }
+        }
+        
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            showQuestion();
         }
 
-        function displayCurrentQuestion() {
-            const questionData = questions[currentQuestionIndex];
-            questionEl.textContent = questionData.question;
-            optionsEl.innerHTML = '';
-            
-            questionData.options.forEach(optionText => {
+        function showQuestion() {
+            quizContainer.innerHTML = ''; // Clear container
+            const question = questions[currentQuestionIndex];
+
+            const questionText = document.createElement('h2');
+            questionText.id = 'question-text';
+            questionText.textContent = question.question;
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.id = 'options-container';
+
+            question.options.forEach(option => {
                 const button = document.createElement('button');
-                button.textContent = optionText;
-                button.className = 'btn btn-option w-full text-left p-4 rounded-lg text-white';
-                button.addEventListener('click', handleAnswer);
-                optionsEl.appendChild(button);
+                button.classList.add('option-btn');
+                button.textContent = option;
+                button.addEventListener('click', () => selectAnswer(button, option, question.correctAnswer));
+                optionsContainer.appendChild(button);
             });
-            updateProgress();
+            
+            const feedbackText = document.createElement('div');
+            feedbackText.id = 'feedback-text';
+
+            quizContainer.appendChild(questionText);
+            quizContainer.appendChild(optionsContainer);
+            quizContainer.appendChild(feedbackText);
         }
 
-        function handleAnswer(e) {
-            const selectedButton = e.target;
-            const isCorrect = selectedButton.textContent === questions[currentQuestionIndex].correctAnswer;
-            if (isCorrect) score++;
-            
-            Array.from(optionsEl.children).forEach(btn => {
-                btn.disabled = true;
-                if (btn.textContent === questions[currentQuestionIndex].correctAnswer) btn.classList.add('correct');
-                else if (btn === selectedButton) btn.classList.add('incorrect');
-            });
+        function selectAnswer(button, selectedOption, correctAnswer) {
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach(opt => opt.disabled = true);
+
+            const isCorrect = selectedOption === correctAnswer;
+            if (isCorrect) {
+                score++;
+                button.classList.add('correct');
+                document.getElementById('feedback-text').textContent = "Correct!";
+            } else {
+                button.classList.add('incorrect');
+                document.getElementById('feedback-text').textContent = `Wrong! The correct answer was: ${correctAnswer}`;
+                // Highlight the correct answer
+                options.forEach(opt => {
+                    if (opt.textContent === correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
 
             setTimeout(() => {
                 currentQuestionIndex++;
-                if (currentQuestionIndex < QUIZ_LENGTH) displayCurrentQuestion();
-                else showResults();
-            }, 1500);
-        }
-        
-        function updateProgress() {
-            progressText.textContent = `Question ${currentQuestionIndex + 1} / ${QUIZ_LENGTH}`;
-            levelText.textContent = `Level ${difficultyLevel}`;
-            progressBar.style.width = `${((currentQuestionIndex + 1) / QUIZ_LENGTH) * 100}%`;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion();
+                } else {
+                    showResults();
+                }
+            }, 2000);
         }
 
         async function showResults() {
-            quizScreen.classList.add('hidden');
-            resultsScreen.classList.remove('hidden');
-
-            const oldLevel = difficultyLevel;
-            if (score <= 2 && difficultyLevel > 1) difficultyLevel--;
-            else if (score >= 4 && difficultyLevel < 5) difficultyLevel++;
-
-            const pointsAwarded = score * (oldLevel * 5); // More points for higher levels
-            scoreText.innerHTML = `<span class="text-6xl font-bold text-white">${score}</span><span class="text-4xl text-emerald-300">/${QUIZ_LENGTH}</span>`;
-            pointsEarnedEl.textContent = `You've earned ${pointsAwarded} points!`;
-
-            if (oldLevel < difficultyLevel) difficultyFeedback.textContent = `Great job! You've advanced to level ${difficultyLevel}.`;
-            else if (oldLevel > difficultyLevel) difficultyFeedback.textContent = `You're moving to level ${difficultyLevel}. Let's try something a bit easier.`;
-            else difficultyFeedback.textContent = `You're staying on level ${difficultyLevel}. Keep it up!`;
+            const pointsEarned = score * (userDifficulty === 'easy' ? 10 : userDifficulty === 'normal' ? 15 : 20);
             
-            // Update Firebase
-            const userProfileRef = doc(db, `/artifacts/${appId}/users/${currentUserId}/profile`, 'details');
-            await updateDoc(userProfileRef, {
-                difficultyLevel: difficultyLevel,
-                points: increment(pointsAwarded),
-                progress: increment(1) // Increment challenges completed
+            quizContainer.innerHTML = `
+                <div id="results-container">
+                    <h2>Quiz Complete!</h2>
+                    <p>You scored ${score} out of ${questions.length}.</p>
+                    <p><strong>You've earned ${pointsEarned} points!</strong></p>
+                    <button id="dashboard-btn">Back to Dashboard</button>
+                </div>
+            `;
+            
+            document.getElementById('dashboard-btn').addEventListener('click', () => {
+                window.location.href = 'dashboard.html';
             });
+
+            await updateUserStats(pointsEarned);
         }
 
-        function showError(message) {
-            loader.classList.add('hidden');
-            errorMessageEl.textContent = `Error: ${message}`;
-            errorMessageEl.classList.remove('hidden');
-            startScreen.classList.remove('hidden');
+        async function updateUserStats(points) {
+            if (!currentUser) return;
+            
+            const userRef = doc(db, "artifacts/global/users", currentUser.uid, "profile", "details");
+            
+            // Determine new difficulty
+            const performance = score / questions.length;
+            let newDifficulty = userDifficulty;
+            if (performance >= 0.8 && userDifficulty === 'easy') newDifficulty = 'normal';
+            if (performance >= 0.8 && userDifficulty === 'normal') newDifficulty = 'hard';
+            if (performance < 0.4 && userDifficulty === 'hard') newDifficulty = 'normal';
+            if (performance < 0.4 && userDifficulty === 'normal') newDifficulty = 'easy';
+
+            try {
+                await updateDoc(userRef, {
+                    points: increment(points),
+                    difficulty: newDifficulty
+                });
+                console.log("User stats updated successfully.");
+            } catch (error) {
+                console.error("Error updating user stats:", error);
+                showError("Could not save your score. Please check your connection.");
+            }
         }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const userRef = doc(db, "artifacts/global/users", user.uid, "profile", "details");
+                try {
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userDifficulty = userSnap.data().difficulty || 'easy';
+                    }
+                } catch (error) {
+                    console.error("Error fetching user profile:", error);
+                    showError("Could not load your profile data. Using default difficulty.");
+                }
+            } else {
+                window.location.href = 'registration.html';
+            }
+        });
+
+        // Get topic from URL on page load
+        window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            const topic = params.get('topic');
+            if (topic) {
+                quizTopic = topic;
+                topicEl.textContent = quizTopic;
+            }
+            startBtn.addEventListener('click', () => generateQuestions(userDifficulty, quizTopic));
+        });
+
     </script>
 </body>
 </html>
