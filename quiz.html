@@ -94,6 +94,7 @@
             border-radius: 8px;
             text-align: center;
             margin-top: 1rem;
+            word-break: break-word;
         }
 
         #quiz-screen { display: none; }
@@ -213,8 +214,17 @@
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to fetch questions from server.');
+                    let errorMessage = `Server error: ${response.status}`;
+                    try {
+                        // Try to parse a JSON error response from our function
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || JSON.stringify(errorData);
+                    } catch (e) {
+                        // If the response isn't JSON (e.g., a Vercel error page), use the raw text
+                        const errorText = await response.text();
+                        if (errorText) errorMessage = errorText;
+                    }
+                    throw new Error(errorMessage);
                 }
                 
                 questions = await response.json();
