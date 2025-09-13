@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoLearn Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-green: #259a5a; --header-bg: #259a5a; --nav-white: #fff; --muted-bg: #f4f4f9; --container-max: 1200px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--muted-bg); color: #333; padding-top: 76px; }
+        .container { max-width: var(--container-max); width: 100%; margin: 0 auto; padding: 0 24px; }
+        .dashboard-header { background: var(--header-bg); color: var(--nav-white); padding:0; box-shadow:0 6px 18px rgba(37,154,90,0.12); width:100%; position:fixed; top:0; left:0; z-index:1100; height:76px; display:flex; align-items:center; }
+        .dashboard-header .container { width:90%; max-width:var(--container-max); margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .logo{ display:flex; align-items:center; font-weight:800; gap:0.75rem; text-decoration:none; color: var(--nav-white); }
+        .dashboard-nav{ display:flex; gap:12px; align-items:center; }
+        .dashboard-nav a, .dashboard-nav button{ color:var(--nav-white); text-decoration: none; font-weight:600; padding:8px 14px; border-radius:22px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.04); transition:background 0.18s, transform 0.12s; }
+        .dashboard-nav a.active, .dashboard-nav a:hover, .dashboard-nav button:hover{ background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .dashboard-footer { text-align:center; padding:15px 0; background:#fff; border-top:1px solid #eaeaea; margin-top:40px; }
+        .leaderboard-container { background-color: #fff; border-radius: 8px; padding: 30px; margin-top: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .leaderboard-title { font-size: 2rem; font-weight: 600; margin-bottom: 10px; }
+        .leaderboard-subtitle { font-size: 1.125rem; color: #666; margin-bottom: 20px; }
+        .leaderboard-stats { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .leaderboard-stat { text-align: center; }
+        .leaderboard-stat-number { font-size: 1.5rem; font-weight: 600; color: #259a5a; }
+        .leaderboard-stat-label { font-size: 0.875rem; color: #666; }
+        .top-performers-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; }
+        .top-performers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .performer-card { background-color: #f9f9fb; border-radius: 8px; padding: 20px; text-align: center; border: 1px solid #eee; }
+        .performer-card.champion { background-color: #e2f7e2; border-color: #a5d6a7; }
+        .performer-card.second { background-color: #fef9e7; border-color: #ffe082; }
+        .performer-card.third { background-color: #e8f0fe; border-color: #9fa8da; }
+        .performer-name { font-size: 1.125rem; font-weight: 500; margin-bottom: 5px; }
+        .performer-points { font-size: 1rem; color: #333; margin-bottom: 5px; }
+        .performer-rank { font-size: 0.875rem; color: #777; font-weight: 600; }
+        .rankings-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 15px; }
+        .rankings-list { list-style: none; padding: 0; }
+        .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; border-bottom: 1px solid #eaeaea; }
+        .ranking-item.current-user { background-color: #e8f5e9; border-left: 4px solid var(--primary-green); font-weight: 600; }
+        .ranking-left { display: flex; align-items: center; }
+        .ranking-rank { font-size: 1.125rem; font-weight: 600; color: #888; margin-right: 15px; width: 30px; text-align: center; }
+        .ranking-name { font-size: 1rem; font-weight: 500; }
+        .ranking-points { font-size: 1rem; font-weight: 600; color: #333; }
+        .loading-state { text-align: center; padding: 50px; font-size: 1.2rem; color: #777; }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="container">
+            <a href="dashboard.html" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path></svg>
+                <span>EcoLearn</span>
+            </a>
+            <nav class="dashboard-nav">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="challenges.html">Challenges</a>
+                <a href="leaderboard.html" class="active">Leaderboard</a>
+                <a href="profile.html">Profile</a>
+                <button id="logout-btn">Log Out</button>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container leaderboard-container">
+            <div id="loading" class="loading-state">Loading Leaderboard...</div>
+            <div id="leaderboard-content" style="display: none;">
+                <div class="leaderboard-title">Leaderboard</div>
+                <div class="leaderboard-subtitle" id="leaderboard-college-name">For eco warriors at your school</div>
+                <div class="leaderboard-stats">
+                    <div class="leaderboard-stat">
+                        <div id="total-participants" class="leaderboard-stat-number">-</div>
+                        <div class="leaderboard-stat-label">Total Participants</div>
+                    </div>
+                    <div class="leaderboard-stat">
+                        <div id="average-points" class="leaderboard-stat-number">-</div>
+                        <div class="leaderboard-stat-label">Average Points</div>
+                    </div>
+                    <div class="leaderboard-stat">
+                        <div id="your-rank" class="leaderboard-stat-number">-</div>
+                        <div class="leaderboard-stat-label">Your Rank</div>
+                    </div>
+                </div>
+                <div class="top-performers">
+                    <div class="top-performers-title">🏆 Top Performers</div>
+                    <div id="top-performers-grid" class="top-performers-grid">
+                        <!-- Top 3 will be dynamically inserted here -->
+                    </div>
+                </div>
+                <div class="rankings-section">
+                    <div class="rankings-title">Complete Rankings</div>
+                    <ul id="rankings-list" class="rankings-list">
+                        <!-- All rankings will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="dashboard-footer">© 2025 EcoLearn Platform</footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
+          authDomain: "myloginapp-212fb.firebaseapp.com",
+          projectId: "myloginapp-212fb",
+          storageBucket: "myloginapp-212fb.firebasestorage.app",
+          messagingSenderId: "407662156233",
+          appId: "1:407662156233:web:d419bc320091e40e827018",
+          measurementId: "G-P5JY41QFSS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = 'ecolearn-app';
+
+        const loadingEl = document.getElementById('loading');
+        const contentEl = document.getElementById('leaderboard-content');
+        
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                fetchAndDisplayLeaderboard(user);
+            } else {
+                window.location.href = 'registration.html';
+            }
+        });
+
+        async function fetchAndDisplayLeaderboard(user) {
+            try {
+                // 1. Get current user's college
+                const userProfileRef = doc(db, `/artifacts/${appId}/users/${user.uid}/profile`, 'details');
+                const userProfileSnap = await getDoc(userProfileRef);
+                if (!userProfileSnap.exists() || !userProfileSnap.data().college) {
+                    throw new Error("User profile or college not found.");
+                }
+                const userCollege = userProfileSnap.data().college;
+                document.getElementById('leaderboard-college-name').textContent = `For eco warriors at ${userCollege}`;
+
+                // 2. Query for all public profiles from that college
+                const profilesRef = collection(db, `/artifacts/${appId}/public/data/public_profiles`);
+                const q = query(profilesRef, where("college", "==", userCollege));
+                const querySnapshot = await getDocs(q);
+
+                let leaderboardData = [];
+                querySnapshot.forEach(doc => {
+                    leaderboardData.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // 3. Sort by points (descending)
+                leaderboardData.sort((a, b) => b.points - a.points);
+                
+                // 4. Populate the UI
+                populateStats(leaderboardData, user.uid);
+                populateTopPerformers(leaderboardData.slice(0, 3));
+                populateRankingsList(leaderboardData, user.uid);
+
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                loadingEl.textContent = "Could not load leaderboard data. Please try again later.";
+            }
+        }
+
+        function populateStats(data, currentUserId) {
+            const totalParticipants = data.length;
+            const totalPoints = data.reduce((sum, user) => sum + user.points, 0);
+            const averagePoints = totalParticipants > 0 ? Math.round(totalPoints / totalParticipants) : 0;
+            const currentUserRank = data.findIndex(user => user.id === currentUserId) + 1;
+
+            document.getElementById('total-participants').textContent = totalParticipants;
+            document.getElementById('average-points').textContent = averagePoints;
+            document.getElementById('your-rank').textContent = currentUserRank > 0 ? `#${currentUserRank}` : 'N/A';
+        }
+
+        function populateTopPerformers(top3) {
+            const grid = document.getElementById('top-performers-grid');
+            grid.innerHTML = '';
+            const ranks = ['champion', 'second', 'third'];
+            const rankText = ['🏆 Champion', '2nd Place', '3rd Place'];
+
+            const placeholder = { username: '...', points: '...' };
+            const p1 = top3[0] || placeholder;
+            const p2 = top3[1] || placeholder;
+            const p3 = top3[2] || placeholder;
+            
+            [p2, p1, p3].forEach((performer, index) => {
+                const visualIndex = [1, 0, 2][index];
+                 if (performer.username === '...') {
+                    grid.innerHTML += `<div class="performer-card"><div class="performer-name">Not enough players</div></div>`;
+                    return;
+                }
+                const card = document.createElement('div');
+                card.className = `performer-card ${ranks[visualIndex]}`;
+                card.innerHTML = `
+                    <div class="performer-name">${performer.username}</div>
+                    <div class="performer-points">${performer.points} points</div>
+                    <div class="performer-rank">${rankText[visualIndex]}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function populateRankingsList(data, currentUserId) {
+            const list = document.getElementById('rankings-list');
+            list.innerHTML = '';
+            if (data.length === 0) {
+                list.innerHTML = '<li>No participants yet. Be the first!</li>';
+                return;
+            }
+            data.forEach((user, index) => {
+                const item = document.createElement('li');
+                item.className = 'ranking-item';
+                if (user.id === currentUserId) {
+                    item.classList.add('current-user');
+                }
+                item.innerHTML = `
+                    <div class="ranking-left">
+                        <span class="ranking-rank">#${index + 1}</span>
+                        <span class="ranking-name">${user.username}</span>
+                    </div>
+                    <span class="ranking-points">${user.points} points</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = 'registration.html';
+            }).catch(error => {
+                console.error('Logout failed:', error);
+            });
+        });
+
+    </script>
+</body>
+</html>
+

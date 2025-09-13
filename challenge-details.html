@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Challenge Details</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-green: #259a5a;
+            --header-bg: #259a5a;
+            --logo-black: #222;
+            --nav-white: #fff;
+        }
+        .main-header {
+            background: var(--header-bg);
+            color: var(--nav-white);
+            padding: 1.2rem 0;
+            box-shadow: none;
+            width: 100%;
+        }
+        .main-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 48px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--logo-black);
+            letter-spacing: 0.5px;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .logo svg {
+            margin-right: 0.5rem;
+        }
+        .main-nav {
+            display: flex;
+            gap: 48px;
+            margin-left: 32px;
+        }
+        .main-nav a {
+            color: var(--nav-white);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.7rem 2.2rem;
+            border-radius: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.15rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .main-nav a.active, .main-nav a:hover {
+            background: rgba(255,255,255,0.13);
+            color: var(--nav-white);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="dashboard.html" class="logo">
+                <!-- ...logo svg... -->
+                <span style="font-weight:800;color:#222;">EcoLearn</span>
+            </a>
+            <nav class="main-nav">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="challenges.html" class="active">Challenges</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Challenge Details</h1>
+            <p>This is a placeholder for the selected challenge details.</p>
+        </div>
+    </main>
+    <footer class="dashboard-footer">
+        © 2025 EcoLearn Platform - Learning sustainability through action
+    </footer>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoLearn - Learn Sustainability Through Action</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Basic Styles */
+    body { font-family: 'Poppins', sans-serif; margin: 0; color: #333; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .btn-primary, .btn-secondary { display: inline-block; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; }
+    .btn-primary { background-color: #2E7D32; color: white; }
+    .btn-primary:hover { background-color: #1B5E20; }
+    .btn-primary:disabled { background-color: #9E9E9E; cursor: not-allowed; }
+    .btn-secondary { background-color: #f0f0f0; color: #333; }
+    .btn-secondary:hover { background-color: #e0e0e0; }
+
+    /* Header */
+    .header { padding: 20px 0; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #2E7D32; }
+    nav a { margin-left: 20px; text-decoration: none; color: #555; font-weight: 600; }
+    nav a:hover { color: #2E7D32; }
+
+    /* Hero Section */
+    .hero { padding: 80px 0; }
+    .hero-grid { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .hero-text { flex: 1 1 50%; }
+    .hero-image { flex: 1 1 40%; text-align: center; }
+    .hero-image img { max-width: 100%; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+    .highlight { color: #2E7D32; }
+    .buttons { margin-top: 2rem; display: flex; gap: 1rem; }
+    
+    /* Auth Modal Styles */
+    .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+    .auth-overlay.show { opacity: 1; visibility: visible; }
+    .auth-panel { background: white; border-radius: 12px; display: flex; width: 90%; max-width: 800px; transform: scale(0.95); transition: transform 0.3s ease; }
+    .auth-overlay.show .auth-panel { transform: scale(1); }
+    .auth-left { flex: 1; padding: 40px; }
+    .auth-right { flex: 0 0 40%; background: #2E7D32; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; border-radius: 0 12px 12px 0; }
+    .auth-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+    .auth-tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 24px; }
+    .auth-tab { background: none; border: none; padding: 12px 0; margin-right: 20px; font-weight: 600; color: #888; cursor: pointer; border-bottom: 2px solid transparent; }
+    .auth-tab.active { color: #2E7D32; border-bottom-color: #2E7D32; }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .auth-form input, .auth-form select { display: block; width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background-color: white; font-family: 'Poppins', sans-serif; }
+    .auth-form select { color: #555; }
+    .auth-actions { display: flex; gap: 1rem; align-items: center; margin-top: 1rem; }
+    
+    /* Footer */
+    footer { text-align: center; padding: 40px 0; background: #f8f8f8; margin-top: 40px; }
+
+    @media (max-width: 768px) {
+      .auth-right { display: none; }
+      .hero-grid { flex-direction: column-reverse; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav-container">
+      <div class="logo">🌱 EcoLearn</div>
+      <nav>
+        <a href="#challenges">Explore Challenges</a>
+        <button class="btn-primary" id="get-started-top">Get Started</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <h1>Learn Sustainability <span class="highlight">Through Action</span></h1>
+        <p>Complete real-world environmental challenges, earn points, compete with peers, and make a positive impact on our planet.</p>
+        <div class="buttons">
+          <button class="btn-primary" id="get-started-hero">Start Your Journey</button>
+          <a href="#challenges" class="btn-secondary">Browse Challenges</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1532649533316-f3554b4232d3?q=80&w=2070&auto=format&fit=crop" alt="Students planting trees">
+      </div>
+    </div>
+  </section>
+  
+  <section class="features" id="challenges">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;">Why Choose EcoLearn?</h2>
+      <p style="text-align: center; max-width: 600px; margin: 0 auto 40px;">Transform environmental education through gamified, action-based learning that creates real-world impact.</p>
+    </div>
+  </section>
+
+  <!-- Auth modal -->
+  <div id="authOverlay" class="auth-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="auth-panel" role="document">
+      <button id="authClose" class="auth-close" aria-label="Close authentication panel">✕</button>
+      <div class="auth-left">
+        <h3 id="authTitle">Create your EcoLearn account</h3>
+        <div class="auth-tabs" role="tablist" aria-label="Authentication tabs">
+          <button class="auth-tab active" data-tab="register" role="tab" aria-selected="true">Register</button>
+          <button class="auth-tab" data-tab="login" role="tab" aria-selected="false">Login</button>
+        </div>
+
+        <form id="registerForm" class="auth-form active" autocomplete="on">
+          <input name="username" type="text" placeholder="Username" required>
+          <select name="college" required>
+            <option value="" disabled selected>Select your School/College</option>
+            <option value="ABC School">ABC School</option>
+            <option value="XYZ College">XYZ College</option>
+            <option value="PQR University">PQR University</option>
+            <option value="Greenwood High">Greenwood High</option>
+            <option value="St. Xavier's College">St. Xavier's College</option>
+            <option value="KL University">KL University</option>
+          </select>
+          <input name="email" type="email" placeholder="Email address" required>
+          <input name="password" type="password" placeholder="Password (min. 6 characters)" required>
+          
+          <div class="auth-actions">
+            <button type="submit" class="btn-primary" id="register-button">Register</button>
+          </div>
+        </form>
+
+        <form id="loginForm" class="auth-form" autocomplete="on">
+          <input name="identifier" type="text" placeholder="Username or Email" required>
+          <input name="password" type="password" placeholder="Password" required>
+          <div class="auth-actions">
+            <button type="submit" class="btn-primary">Login</button>
+          </div>
+        </form>
+      </div>
+      <div class="auth-right" aria-hidden="true">
+        <h2>Welcome to EcoLearn</h2>
+        <p style="font-size:1rem; color: #C8E6C9;">Join thousands learning sustainability through action.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message/Error Display -->
+  <div id="message-box" style="position: fixed; bottom: -100px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: bottom 0.5s ease-in-out; z-index: 2000;">
+      <p id="message-text"></p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 EcoLearn Platform. All rights reserved.</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWA-fiGiXOUp8QwPaldztN5cTQxWibghk",
+      authDomain: "myloginapp-212fb.firebaseapp.com",
+      projectId: "myloginapp-212fb",
+      storageBucket: "myloginapp-212fb.firebasestorage.app",
+      messagingSenderId: "407662156233",
+      appId: "1:407662156233:web:d419bc320091e40e827018",
+      measurementId: "G-P5JY41QFSS"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = 'ecolearn-app';
+    
+    // Redirect if user is already logged in AND verified
+    onAuthStateChanged(auth, user => {
+        if (user && user.emailVerified) {
+             window.location.href = 'dashboard.html';
+        }
+    });
+
+    // --- Modal and UI Logic ---
+    const overlay = document.getElementById('authOverlay');
+    const closeBtn = document.getElementById('authClose');
+    const tabs = document.querySelectorAll('.auth-tab');
+    const forms = { register: document.getElementById('registerForm'), login: document.getElementById('loginForm') };
+    const title = document.getElementById('authTitle');
+    const registerButton = document.getElementById('register-button');
+
+    function openAuth(initialTab = 'register') {
+      overlay.classList.add('show');
+      switchTo(initialTab);
+    }
+
+    function closeAuth() { overlay.classList.remove('show'); }
+    function switchTo(tab) {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      Object.keys(forms).forEach(k => forms[k].classList.toggle('active', k === tab));
+      title.textContent = tab === 'register' ? 'Create your EcoLearn account' : 'Welcome back';
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => switchTo(t.dataset.tab)));
+    closeBtn.addEventListener('click', closeAuth);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeAuth(); });
+    document.getElementById('get-started-top').addEventListener('click', () => openAuth('register'));
+    document.getElementById('get-started-hero').addEventListener('click', () => openAuth('register'));
+    
+    // --- Message Display ---
+    const showMessage = (message, isError = true) => {
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        messageText.textContent = message;
+        messageBox.style.backgroundColor = isError ? '#D32F2F' : '#388E3C';
+        messageBox.style.bottom = '20px';
+        setTimeout(() => { messageBox.style.bottom = '-100px'; }, 5000); // Increased timeout for longer messages
+    };
+
+    // --- Firebase Logic ---
+    forms.register.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      registerButton.disabled = true;
+
+      const username = forms.register.querySelector('input[name="username"]').value.trim();
+      const college = forms.register.querySelector('select[name="college"]').value;
+      const email = forms.register.querySelector('input[name="email"]').value.trim();
+      const password = forms.register.querySelector('input[name="password"]').value;
+
+      if (!username || !college || !email || password.length < 6) {
+        showMessage("Please fill all fields. Password must be 6+ characters.", true);
+        registerButton.disabled = false;
+        return;
+      }
+
+      // Check if username is taken
+      const usernamesRef = collection(db, `/artifacts/${appId}/public/data/usernames`);
+      const qUsername = query(usernamesRef, where("username", "==", username));
+      const usernameSnap = await getDocs(qUsername);
+      if (!usernameSnap.empty) {
+        showMessage("Username is already taken.", true);
+        registerButton.disabled = false;
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Send verification email
+        await sendEmailVerification(user);
+        
+        const points = Math.floor(Math.random() * 200) + 50;
+        
+        // Save user data to Firestore
+        await setDoc(doc(db, `/artifacts/${appId}/users/${user.uid}/profile`, 'details'), { username, email, college, points, level: 1, progress: 0 });
+        await setDoc(doc(db, `/artifacts/${appId}/public/data/public_profiles`, user.uid), { username, college, points });
+        await setDoc(doc(db, `/artifacts/${appId}/public/data/usernames`, user.uid), { username, email, uid: user.uid });
+
+        showMessage("Account created! Redirecting to your dashboard...", false);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error("Registration Error: ", error);
+        showMessage(error.code.includes('email-already-in-use') ? 'This email is already registered.' : error.message, true);
+      } finally {
+        registerButton.disabled = false;
+      }
+    });
+
+    forms.login.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const loginButton = forms.login.querySelector('button');
+      loginButton.disabled = true;
+
+      let identifier = forms.login.querySelector('input[name="identifier"]').value.trim();
+      const password = forms.login.querySelector('input[name="password"]').value;
+      let email = identifier;
+
+      if (!identifier || !password) {
+        showMessage("Please provide credentials.", true);
+        loginButton.disabled = false;
+        return;
+      }
+
+      // Look up email if identifier is a username
+      if (!identifier.includes('@')) {
+        try {
+          const q = query(collection(db, `/artifacts/${appId}/public/data/usernames`), where("username", "==", identifier));
+          const querySnapshot = await getDocs(q);
+          if (querySnapshot.empty) {
+            showMessage("Username not found.", true);
+            loginButton.disabled = false;
+            return;
+          }
+          email = querySnapshot.docs[0].data().email;
+        } catch(error) {
+          showMessage("Error finding user.", true);
+          loginButton.disabled = false;
+          return;
+        }
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        if (!userCredential.user.emailVerified) {
+          await signOut(auth);
+          showMessage("Please verify your email address before logging in. Check your inbox for the link.", true);
+          return;
+        }
+
+        showMessage("Logged in! Redirecting...", false);
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+      } catch (error) { 
+        console.error("Login Error: ", error);
+        showMessage("Invalid credentials.", true); 
+      } finally {
+        loginButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
+
